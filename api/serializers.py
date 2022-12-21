@@ -1,13 +1,13 @@
 from rest_framework import serializers
-from api.models import Customer, Seller, Admin
+from api.models import CustomUser
 from rest_framework.permissions import AllowAny
 
 
-# Create your serializers here
+# Create your serializers he                                                        re
 #
-# class CustomerSerializer(serializers.ModelSerializer):
+# class UserSerializer(serializers.ModelSerializer):
 #     class Meta:
-#         model = Customer
+#         model = CustomUser
 #         fields = ['first_name', 'last_name', 'address', 'city', 'postal_code', 'email']
 #
 #
