@@ -21,10 +21,10 @@ from rest_framework_simplejwt.views import TokenVerifyView
 from rest_framework_simplejwt.views import TokenRefreshView
 from api.auth import CustomTokenObtainPairView
 router = DefaultRouter()
-
-router.register('customer', views.CustomerViewSet, basename='customer')
-router.register('seller',views.SellerViewSet,basename='seller')
-router.register('admin',views.AdminViewSet,basename='admin')
+#
+# router.register('customer', views.CustomerViewSet, basename='customer')
+# router.register('seller',views.SellerViewSet,basename='seller')
+# router.register('admin',views.AdminViewSet,basename='admin')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),

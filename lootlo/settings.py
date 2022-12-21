@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -136,3 +135,19 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
 }
+
+from django.apps import apps
+from django.core.exceptions import AppRegistryNotReady
+
+try:
+    # Check if the app registry is ready
+    apps.ready
+
+
+    # Now it's safe to use the ORM
+    from api.models import CustomUser
+    AUTH_USER_MODEL = 'CustomUser'
+
+except AppRegistryNotReady:
+    # The app registry is not ready yet, so we can't use the ORM
+    pass
