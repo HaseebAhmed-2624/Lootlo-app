@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
     'rest_framework',
     'rest_framework_simplejwt',
     'api',
@@ -120,11 +121,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-# Permissions
-# 'DEFAULT_PERMISSION_CLASSES': [
-#     'rest_framework.permissions.AllowAny'
-# ],
-# AUTH_USER_MODEL = User
+
+# ADDITIONAL SETTINGS
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -132,22 +130,19 @@ REST_FRAMEWORK = {
     ]
 }
 
+GRAPH_MODELS = {
+    'all_applications': True,
+    'group_models': True,
+    'app_labels': ["myapp1", "myapp2", "auth"],
+}
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
 }
 
-from django.apps import apps
-from django.core.exceptions import AppRegistryNotReady
+AUTH_USER_MODEL = 'api.CustomUser'
 
-try:
-    # Check if the app registry is ready
-    apps.ready
-
-
-    # Now it's safe to use the ORM
-    from api.models import CustomUser
-    AUTH_USER_MODEL = 'CustomUser'
-
-except AppRegistryNotReady:
-    # The app registry is not ready yet, so we can't use the ORM
-    pass
+# Permissions
+# 'DEFAULT_PERMISSION_CLASSES': [
+#     'rest_framework.permissions.AllowAny'
+# ],
