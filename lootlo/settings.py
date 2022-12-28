@@ -142,8 +142,3 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
 }
 
-
-# Permissions
-# 'DEFAULT_PERMISSION_CLASSES': [
-#     'rest_framework.permissions.AllowAny'
-# ],
