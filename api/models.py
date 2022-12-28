@@ -1,15 +1,11 @@
+# models
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
 
 
 class UserType(models.Model):
-    CHOICES = (
-        ('buyer', 'Buyer'),
-        ('seller', 'Seller'),
-        ('admin', 'Admin'),
-    )
-
-    user_type = models.CharField(max_length=20, choices=CHOICES, default='buyer')
+    number = models.IntegerField()
+    usertype = models.CharField(max_length=20)
 
 
 class CustomUser(AbstractUser):
@@ -18,8 +14,14 @@ class CustomUser(AbstractUser):
     address = models.CharField(max_length=100, default='', blank=True)
     city = models.CharField(max_length=100, default='', blank=True)
     postal_code = models.IntegerField(default='0', blank=True)
-    user_type = models.OneToOneField(UserType, on_delete=models.CASCADE, default=None, blank=True,
-                                     related_name='usertype')
+    user_type = models.ManyToManyField(UserType, related_name='user_type')
 
     def __str__(self):
         return self.username
+
+    # def save(self, *args, **kwargs):
+    #     try:
+    #         UserType.objects.create(user_id=self.id)
+    #         super().save(*args, **kwargs)  #
+    #     except Exception as e:
+    #         print('User Type exception ', e)

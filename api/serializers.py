@@ -1,10 +1,18 @@
-from api.models import CustomUser
+from api.models import CustomUser, UserType
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import get_user_model
+from rest_framework.decorators import api_view
 
 
+class UserTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserType
+        fields = '__all__'
+
+
+@api_view(['POST'])
 class UserSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True, validators=[UniqueValidator(queryset=CustomUser.objects.all())])
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password],
@@ -13,12 +21,14 @@ class UserSerializer(serializers.ModelSerializer):
     city = serializers.CharField(max_length=30, required=True)
     address = serializers.CharField(max_length=100, required=True)
     postal_code = serializers.IntegerField(required=True)
+    user_type = UserTypeSerializer(many=True)
 
+    # usertype=serializers.
     class Meta:
         user = get_user_model()
         model = user
         fields = (
-        'username', 'password', 'password2', 'email', 'first_name', 'last_name', 'address', 'city', 'postal_code')
+            'username', 'password', 'password2', 'email', 'first_name', 'last_name', 'address', 'city', 'postal_code')
         extra_kwargs = {
             'first_name': {'required': True},
             'last_name': {'required': True},

@@ -11,13 +11,10 @@ class UserModelViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
     def get_permissions(self):
-        """
-        Instantiates and returns the list of permissions that this view requires.
-        """
-        if self.action == 'list':
+        if self.action == 'retrieve':
             permission_classes = [permissions.IsAdminUser]
-        elif self.action == 'retieve':
-            permission_classes = [permissions.IsAdminUser, permissions.IsAuthenticated]
+        elif self.action == 'list':
+            permission_classes = [permissions.IsAdminUser]
         elif self.action == 'update':
             permission_classes = [IsOwnerPermission]
         elif self.action == 'partial_update':
@@ -27,10 +24,5 @@ class UserModelViewSet(viewsets.ModelViewSet):
         elif self.action == 'create':
             permission_classes = [permissions.AllowAny]
         else:
-            permission_classes = [permissions.IsAdminUser]
+            permission_classes = [permissions.AllowAny]
         return [permission() for permission in permission_classes]
-
- # TODO create user type model
- # TODO write tests for code
- # TODO handle errors
-
