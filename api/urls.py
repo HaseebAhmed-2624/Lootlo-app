@@ -1,8 +1,8 @@
-from django.urls import path, include
+from django.urls import path
 from api import views
 from rest_framework_simplejwt.views import TokenVerifyView
-from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
-from api.auth import CustomTokenObtainPairView, CustomTokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenRefreshView
+from api.auth import CustomTokenObtainPairView
 urlpatterns = [
     path('list/', views.UserModelViewSet.as_view({'get': 'list'}), name='list'),
     path('retrieve/<int:pk>', views.UserModelViewSet.as_view({'get': 'retrieve'})),
@@ -12,4 +12,5 @@ urlpatterns = [
     path('update/<int:pk>', views.UserModelViewSet.as_view({'put': 'update', 'patch': 'partial_update'})),
     path('refreshtoken/', TokenRefreshView.as_view(), name='token_refresh'),
     path('verifytoken/', TokenVerifyView.as_view(), name='token_verify'),
+    # path('usertypes/',views.ListUserTypes.as_view(),name='users')
 ]

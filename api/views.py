@@ -11,7 +11,6 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 
 @receiver(request_started)
 def first_request_received(sender, **kwargs):
-
     """Checks if UserType records exists if not then creates records"""
 
     check_usertype = UserType.objects.all()
@@ -58,3 +57,25 @@ class UserModelViewSet(viewsets.ModelViewSet):
         else:
             permission_classes = [permissions.AllowAny]
         return [permission() for permission in permission_classes]
+
+#
+# from rest_framework.views import APIView
+# from rest_framework.response import Response
+#
+#
+# class ListUserTypes(APIView):
+#     """
+#     View to list all users in the system.
+#
+#     * Requires token authentication.
+#     * Only admin users are able to access this view.
+#     """
+#
+#     def get(self, request, format=None):
+#         """
+#         Return a list of all users.
+#         """
+#         User = get_user_model()
+#         usertypes = User.objects.select_related('user_type').all()
+#         print()
+#         return Response(usertypes)
