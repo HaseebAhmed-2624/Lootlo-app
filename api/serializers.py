@@ -10,20 +10,21 @@ class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password],
                                      style={'input_type': 'password'})
     password2 = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
-    city = serializers.CharField(max_length=30, required=True)
-    address = serializers.CharField(max_length=100, required=True)
-    postal_code = serializers.IntegerField(required=True)
     user_type = serializers.PrimaryKeyRelatedField(queryset=UserType.objects.all())
 
     class Meta:
         user = get_user_model()
         model = user
         fields = (
-            'username', 'password', 'password2', 'email', 'first_name', 'last_name', 'address', 'city', 'postal_code','user_type')
+            'username', 'password', 'password2', 'email', 'first_name', 'last_name', 'address', 'city', 'postal_code',
+            'user_type')
         extra_kwargs = {
             'first_name': {'required': True},
             'last_name': {'required': True},
-            'password': {'write_only': True, 'required': False}
+            'password': {'write_only': True, 'required': False},
+            'city': {'max_length': 150, 'required': True},
+            'address': {'max_length': 150, 'required': True,},
+            'postal_code': {'required': True}
         }
 
     def create(self, validated_data):

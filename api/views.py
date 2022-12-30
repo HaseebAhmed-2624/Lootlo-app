@@ -35,8 +35,7 @@ class UserModelViewSet(viewsets.ModelViewSet):
             self.authentication_classes = []
         else:
             self.authentication_classes = [JWTAuthentication]
-        # Use the SessionAuthentication class for all other request methods
-        return []
+        return [auth() for auth in self.authentication_classes]
 
     def get_permissions(self):
 
@@ -46,6 +45,7 @@ class UserModelViewSet(viewsets.ModelViewSet):
             permission_classes = [permissions.IsAdminUser]
         elif self.action == 'list':
             permission_classes = [permissions.IsAdminUser]
+            print()
         elif self.action == 'update':
             permission_classes = [IsOwnerPermission]
         elif self.action == 'partial_update':
