@@ -42,7 +42,7 @@ class UserModelViewSet(viewsets.ModelViewSet):
         """Assigning permissions for actions in ModelViewSet"""
 
         if self.action == 'retrieve':
-            permission_classes = [permissions.IsAdminUser]
+            permission_classes = [IsOwnerPermission]
         elif self.action == 'list':
             permission_classes = [permissions.IsAdminUser]
             print()
@@ -51,7 +51,7 @@ class UserModelViewSet(viewsets.ModelViewSet):
         elif self.action == 'partial_update':
             permission_classes = [IsOwnerPermission]
         elif self.action == 'destroy':
-            permission_classes = [permissions.IsAdminUser, permissions.IsAuthenticated]
+            permission_classes = [IsOwnerPermission]
         elif self.action == 'create':
             permission_classes = [permissions.AllowAny]
         else:

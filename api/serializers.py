@@ -51,6 +51,6 @@ class UserSerializer(serializers.ModelSerializer):
         instance.last_name = validated_data.get('last_name', instance.last_name)
         instance.city = validated_data.get('city', instance.city)
         instance.postal_code = validated_data.get('postal_code', instance.postal_code)
-        instance.user_type = validated_data.get('user_type', instance.user_type)
+        # instance.user_type = validated_data.get('user_type', instance.user_type)
         instance.save()
         return instance
