@@ -38,9 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_extensions',
+    # 'django_extensions',
     'rest_framework',
-    'rest_framework_simplejwt',
+    # 'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'api',
 ]
 
@@ -132,13 +133,14 @@ REST_FRAMEWORK = {
     ]
 }
 
-GRAPH_MODELS = {
-    'all_applications': True,
-    'group_models': True,
-    'app_labels': ["myapp1", "myapp2", "auth"],
-}
+# GRAPH_MODELS = {
+#     'all_applications': True,
+#     'group_models': True,
+#     'app_labels': ["myapp1", "myapp2", "auth"],
+# }
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    # "TOKEN_VERIFY_SERIALIZER": "api.auth.CustomTokenVerifySerializer",
 }
 

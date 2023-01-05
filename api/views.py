@@ -1,12 +1,14 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status, permissions
 from django.contrib.auth import get_user_model
-from api.serializers import UserSerializer
-from rest_framework import permissions
 from api.permissions import IsOwnerPermission
 from django.core.signals import request_started
 from django.dispatch import receiver
-from api.models import UserType
+from api.models import UserType, CustomUser
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from api.serializers import UserSerializer
+
 
 
 @receiver(request_started)
@@ -58,24 +60,69 @@ class UserModelViewSet(viewsets.ModelViewSet):
             permission_classes = [permissions.AllowAny]
         return [permission() for permission in permission_classes]
 
-#
-# from rest_framework.views import APIView
-# from rest_framework.response import Response
-#
-#
-# class ListUserTypes(APIView):
-#     """
-#     View to list all users in the system.
-#
-#     * Requires token authentication.
-#     * Only admin users are able to access this view.
-#     """
-#
-#     def get(self, request, format=None):
-#         """
-#         Return a list of all users.
-#         """
-#         User = get_user_model()
-#         usertypes = User.objects.select_related('user_type').all()
-#         print()
-#         return Response(usertypes)
+    def update(self, request, *args, **kwargs):
+        """get user id from token and perform update operation"""
+        response = JWTAuthentication().authenticate(request)
+        if response is not None:
+            user, token = response
+            id = token.get('user_id', default=None)
+            if id is None:
+                return Response(data="Invalid Token")
+            else:
+                instance = CustomUser.objects.get(pk=id)
+                serializer = self.get_serializer(instance, data=request.data, partial=True)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(data={'message': 'Record Update'})
+                else:
+                    return Response(data=serializer.errors)
+
+    def retrieve(self, request, *args, **kwargs):
+        """get user id from token and perform retrieve operation"""
+        response = JWTAuthentication().authenticate(request)
+        if response is not None:
+            user, token = response
+            id = token.get('user_id', default=None)
+            if id is None:
+                return Response(data={'message': "Invalid Token"})
+            else:
+                instance = CustomUser.objects.get(pk=id)
+                serializer = UserSerializer(instance=instance)
+            return Response(data=serializer.data)
+        else:
+            return Response(data={'message': "authentication credentials were not provided"})
+
+    def destroy(self, request, *args, **kwargs):
+        """get user id from token and perform delete operation"""
+
+        response = JWTAuthentication().authenticate(request)
+        if response is not None:
+            token = response[1]
+            id = token.get('user_id', default=None)
+            if id is None:
+                return Response(data={'message': "Invalid Token"})
+            else:
+                instance = CustomUser.objects.get(pk=id)
+                instance.delete()
+            return Response(data={'message': 'User Deleted'})
+        else:
+            return Response(data={'message': "authentication credentials were not provided"})
+
+
+class VerifyToken(APIView):
+    """
+    View to list all users in the system.
+
+    * Requires token authentication.
+    """
+
+    def post(self, request, format=None):
+        """
+        Return a list of all users.
+        """
+        response = JWTAuthentication().authenticate(request)
+        if response is not None:
+            user, token = response
+            return Response(data={'message': f'this is decoded token claims  {token.payload}'})
+        else:
+            return Response(data={'message': "authentication credentials were not provided"})

@@ -23,7 +23,7 @@ class UserSerializer(serializers.ModelSerializer):
             'last_name': {'required': True},
             'password': {'write_only': True, 'required': False},
             'city': {'max_length': 150, 'required': True},
-            'address': {'max_length': 150, 'required': True,},
+            'address': {'max_length': 150, 'required': True},
             'postal_code': {'required': True}
         }
 
